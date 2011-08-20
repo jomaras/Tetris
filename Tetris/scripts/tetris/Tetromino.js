@@ -20,6 +20,8 @@ Tetromino.translateUp = function(tetromino)
 	{
 		square.translateUp();
 	});
+	
+	tetromino.position.y -= Tetromino.squareHeight;
 };
 
 Tetromino.translateDown = function(tetromino)
@@ -28,6 +30,8 @@ Tetromino.translateDown = function(tetromino)
 	{
 		square.translateDown();
 	});
+	
+	tetromino.position.y += Tetromino.squareHeight;
 };
 
 Tetromino.translateLeft = function(tetromino)
@@ -36,6 +40,8 @@ Tetromino.translateLeft = function(tetromino)
 	{
 		square.translateLeft();
 	});
+	
+	tetromino.position.x -= Tetromino.squareWidth;
 };
 
 Tetromino.translateRight = function(tetromino)
@@ -44,6 +50,8 @@ Tetromino.translateRight = function(tetromino)
 	{
 		square.translateRight();
 	});
+	
+	tetromino.position.x += Tetromino.squareWidth;
 };
 
 function TetrominoT(position)
@@ -53,10 +61,10 @@ function TetrominoT(position)
 	
 	this.draw = function(){ Tetromino.draw(this);};
 	
-	this.translateUp = function() { this.position.y -= Tetromino.squareHeight; Tetromino.translateUp(this); };
-	this.translateDown = function() { this.position.y += Tetromino.squareHeight; Tetromino.translateDown(this); };
-	this.translateLeft = function() { this.position.x -= Tetromino.squareWidth; Tetromino.translateLeft(this); };
-	this.translateRight = function() { this.position.x += Tetromino.squareWidth; Tetromino.translateRight(this); };
+	this.translateUp = function() { Tetromino.translateUp(this); };
+	this.translateDown = function() { Tetromino.translateDown(this); };
+	this.translateLeft = function() { Tetromino.translateLeft(this); };
+	this.translateRight = function() { Tetromino.translateRight(this); };
 	
 	this.rotateLeft = function() 
 	{
