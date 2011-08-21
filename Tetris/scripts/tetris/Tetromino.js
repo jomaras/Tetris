@@ -2,9 +2,9 @@ function Tetromino(position){ }
 
 Tetromino.squareWidth = 20;
 Tetromino.squareHeight = 20;
-Tetromino.createSquare = function(xPos, yPos)
+Tetromino.createSquare = function(xPos, yPos, color)
 {
-	return new Square(new Point(xPos, yPos), Tetromino.squareWidth, Tetromino.squareHeight);
+	return new Square(new Point(xPos, yPos), Tetromino.squareWidth, Tetromino.squareHeight, color);
 };
 Tetromino.draw = function(tetromino)
 {
@@ -58,6 +58,7 @@ function TetrominoT(position)
 {
 	this.squares = [];
 	this.position = position;
+	this.squareColor = CanvasDrawer.COLOR_LIGHT_GREEN;
 	
 	this.draw = function(){ Tetromino.draw(this);};
 	
@@ -88,10 +89,10 @@ function TetrominoT(position)
 	this.createNormalSetting = function() 
 	{
 		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = true, this.isFacingLeft = false; 
 		this.isFacingReverse = false, this.isFacingRight = false;
@@ -103,10 +104,10 @@ function TetrominoT(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = true; 
 		this.isFacingReverse = false, this.isFacingRight = false;
@@ -118,10 +119,10 @@ function TetrominoT(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = false; 
 		this.isFacingReverse = false, this.isFacingRight = true;
@@ -133,10 +134,10 @@ function TetrominoT(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = false; 
 		this.isFacingReverse = true, this.isFacingRight = false;
@@ -151,6 +152,7 @@ function TetrominoI(position)
 {
 	this.squares = [];
 	this.position = position;
+	this.squareColor = CanvasDrawer.COLOR_TEAL;
 	
 	this.draw = function(){ Tetromino.draw(this);};
 	
@@ -174,10 +176,10 @@ function TetrominoI(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + 2*Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + 2*Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingHorizontal = true, this.isFacingVertical = false;
 		
@@ -188,10 +190,10 @@ function TetrominoI(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + 2*Tetromino.squareWidth, this.position.y));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + 2*Tetromino.squareWidth, this.position.y, this.squareColor));
 		
 		this.isFacingHorizontal = false, this.isFacingVertical = true;
 		
@@ -205,6 +207,8 @@ function TetrominoJ(position)
 {
 	this.squares = [];
 	this.position = position;
+	
+	this.squareColor = CanvasDrawer.COLOR_RED;
 	
 	this.draw = function(){ Tetromino.draw(this);};
 	
@@ -235,10 +239,10 @@ function TetrominoJ(position)
 	this.createNormalSetting = function() 
 	{
 		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = true, this.isFacingLeft = false; 
 		this.isFacingReverse = false, this.isFacingRight = false;
@@ -249,10 +253,10 @@ function TetrominoJ(position)
 	this.createLeftSetting = function() 
 	{
 		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = true; 
 		this.isFacingReverse = false, this.isFacingRight = false;
@@ -263,10 +267,10 @@ function TetrominoJ(position)
 	this.createRightSetting = function() 
 	{
 		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = false; 
 		this.isFacingReverse = false, this.isFacingRight = true;
@@ -277,10 +281,10 @@ function TetrominoJ(position)
 	this.createReverseSetting = function() 
 	{
 		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = false; 
 		this.isFacingReverse = true, this.isFacingRight = false;
@@ -296,6 +300,8 @@ function TetrominoL(position)
 	this.squares = [];
 	this.position = position;
 	
+	this.squareColor = CanvasDrawer.COLOR_DARK_ORANGE;
+	
 	this.draw = function(){ Tetromino.draw(this);};
 	
 	this.translateUp = function() { Tetromino.translateUp(this); };
@@ -326,10 +332,10 @@ function TetrominoL(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = true, this.isFacingLeft = false; 
 		this.isFacingReverse = false, this.isFacingRight = false;
@@ -341,10 +347,10 @@ function TetrominoL(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = true; 
 		this.isFacingReverse = false, this.isFacingRight = false;
@@ -356,10 +362,10 @@ function TetrominoL(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = false; 
 		this.isFacingReverse = false, this.isFacingRight = true;
@@ -371,10 +377,10 @@ function TetrominoL(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingNormal = false, this.isFacingLeft = false; 
 		this.isFacingReverse = true, this.isFacingRight = false;
@@ -390,6 +396,8 @@ function TetrominoS(position)
 	this.squares = [];
 	this.position = position;
 	
+	this.squareColor = CanvasDrawer.COLOR_LIGHT_GREEN;
+	
 	this.draw = function(){ Tetromino.draw(this);};
 	
 	this.translateUp = function() { Tetromino.translateUp(this); };
@@ -412,10 +420,10 @@ function TetrominoS(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
 		
 		this.isFacingHorizontal = true, this.isFacingVertical = false; 
 		
@@ -426,10 +434,10 @@ function TetrominoS(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingHorizontal = false, this.isFacingVertical = true; 
 		
@@ -444,6 +452,8 @@ function TetrominoZ(position)
 	this.squares = [];
 	this.position = position;
 	
+	this.squareColor = CanvasDrawer.COLOR_BLUE;
+	
 	this.draw = function(){ Tetromino.draw(this);};
 	
 	this.translateUp = function() { Tetromino.translateUp(this); };
@@ -466,10 +476,10 @@ function TetrominoZ(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingHorizontal = true, this.isFacingVertical = false; 
 		
@@ -480,10 +490,10 @@ function TetrominoZ(position)
 	{
 		this.squares = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
 		
 		this.isFacingHorizontal = false, this.isFacingVertical = true; 
 		
@@ -491,4 +501,38 @@ function TetrominoZ(position)
 	};
 	
 	this.createHorizontalSetting();
+}
+
+function TetrominoO(position)
+{
+	this.squares = [];
+	this.position = position;
+	
+	this.squareColor = CanvasDrawer.COLOR_YELLOW;
+	
+	this.draw = function(){ Tetromino.draw(this);};
+	
+	this.translateUp = function() { Tetromino.translateUp(this); };
+	this.translateDown = function() { Tetromino.translateDown(this); };
+	this.translateLeft = function() { Tetromino.translateLeft(this); };
+	this.translateRight = function() { Tetromino.translateRight(this); };
+	
+	this.rotateLeft = function() { this.draw(); };
+	this.rotateRight = function() { this.draw(); };
+	
+	this.create = function() 
+	{
+		this.squares = [];
+		
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		
+		this.isFacingHorizontal = true, this.isFacingVertical = false; 
+		
+		this.draw();
+	};
+	
+	this.create();
 }

@@ -1,12 +1,13 @@
-function Square(point, width, height)
+function Square(point, width, height, color)
 {
 	this.point = point;
 	this.width = width;
 	this.height = height;
+	this.color = color;
 	
 	this.draw = function()
 	{
-		CanvasDrawer.drawSquare(this.point, this.width, this.height);
+		CanvasDrawer.drawSquare(this.point, this.width, this.height, this.color);
 	};
 	
 	this.translate = function(translateByPoint)
