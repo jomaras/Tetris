@@ -28,6 +28,7 @@ var CanvasDrawer =
 	},
 	
 	COLOR_RED: "rgb(255, 0, 0)",
+	COLOR_DARK_RED: "rgb(160, 0, 0)",
 	COLOR_GREEN: "rgb(0, 255, 0)",
 	COLOR_BLUE: "rgb(0, 0, 255)",
 	COLOR_TEAL: "rgb(68, 255, 255)",
