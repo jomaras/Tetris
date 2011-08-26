@@ -16,49 +16,82 @@ Tetromino.draw = function(tetromino)
 
 Tetromino.translateUp = function(tetromino)
 {
+	var newPosition = [];
+	
 	tetromino.squares.forEach(function(square)
 	{
-		square.translateUp();
+		newPosition.push(square.createTranslatedUpSquare());
 	});
 	
-	tetromino.position.y -= Tetromino.squareHeight;
+	if(tetromino.manager.isPositionChangeAllowed(tetromino, newPosition))
+	{
+		tetromino.squares = newPosition;
+		tetromino.position.y -= Tetromino.squareHeight;
+	}
+	
+	tetromino.draw();
 };
 
 Tetromino.translateDown = function(tetromino)
 {
+	var newPosition = [];
+	
 	tetromino.squares.forEach(function(square)
 	{
-		square.translateDown();
+		newPosition.push(square.createTranslatedDownSquare());
 	});
 	
-	tetromino.position.y += Tetromino.squareHeight;
+	if(tetromino.manager.isPositionChangeAllowed(tetromino, newPosition))
+	{
+		tetromino.squares = newPosition;
+		tetromino.position.y += Tetromino.squareHeight;
+	}
+	
+	tetromino.draw();
 };
 
 Tetromino.translateLeft = function(tetromino)
 {
+	var newPosition = [];
+	
 	tetromino.squares.forEach(function(square)
 	{
-		square.translateLeft();
+		newPosition.push(square.createTranslatedLeftSquare());
 	});
 	
-	tetromino.position.x -= Tetromino.squareWidth;
+	if(tetromino.manager.isPositionChangeAllowed(tetromino, newPosition))
+	{
+		tetromino.squares = newPosition;
+		tetromino.position.x -= Tetromino.squareWidth;
+	}
+	
+	tetromino.draw();
 };
 
 Tetromino.translateRight = function(tetromino)
 {
+	var newPosition = [];
+	
 	tetromino.squares.forEach(function(square)
 	{
-		square.translateRight();
+		newPosition.push(square.createTranslatedRightSquare());
 	});
 	
-	tetromino.position.x += Tetromino.squareWidth;
+	if(tetromino.manager.isPositionChangeAllowed(tetromino, newPosition))
+	{
+		tetromino.squares = newPosition;
+		tetromino.position.x += Tetromino.squareWidth;
+	}
+	
+	tetromino.draw();
 };
-
-function TetrominoT(position)
+	
+function TetrominoT(position, manager)
 {
 	this.squares = [];
 	this.position = position;
 	this.squareColor = CanvasDrawer.COLOR_LIGHT_GREEN;
+	this.manager = manager;
 	
 	this.draw = function(){ Tetromino.draw(this); };
 	
@@ -88,59 +121,80 @@ function TetrominoT(position)
 	
 	this.createNormalSetting = function() 
 	{
-		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		var newPosition = [];
 		
-		this.isFacingNormal = true, this.isFacingLeft = false; 
-		this.isFacingReverse = false, this.isFacingRight = false;
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = true, this.isFacingLeft = false; 
+			this.isFacingReverse = false, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createLeftSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingNormal = false, this.isFacingLeft = true; 
-		this.isFacingReverse = false, this.isFacingRight = false;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = true; 
+			this.isFacingReverse = false, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createRightSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingNormal = false, this.isFacingLeft = false; 
-		this.isFacingReverse = false, this.isFacingRight = true;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = false; 
+			this.isFacingReverse = false, this.isFacingRight = true;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createReverseSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
 		
-		this.isFacingNormal = false, this.isFacingLeft = false; 
-		this.isFacingReverse = true, this.isFacingRight = false;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = false; 
+			this.isFacingReverse = true, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};

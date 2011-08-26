@@ -36,4 +36,48 @@ function Square(point, width, height, color)
 	{
 		this.translate(new Point(0, this.height));
 	};
+	
+	this.createTranslatedUpSquare = function()
+	{
+		return new Square
+		(
+			new Point(this.point.x, this.point.y - this.height),
+			this.width,
+			this.height,
+			this.color
+		);
+	};
+	
+	this.createTranslatedDownSquare = function()
+	{
+		return new Square
+		(
+			new Point(this.point.x, this.point.y + this.height),
+			this.width,
+			this.height,
+			this.color
+		);
+	};
+	
+	this.createTranslatedLeftSquare = function()
+	{
+		return new Square
+		(
+			new Point(this.point.x - this.width, this.point.y),
+			this.width,
+			this.height,
+			this.color
+		);
+	};
+	
+	this.createTranslatedRightSquare = function()
+	{
+		return new Square
+		(
+			new Point(this.point.x + this.width, this.point.y),
+			this.width,
+			this.height,
+			this.color
+		);
+	};
 }
