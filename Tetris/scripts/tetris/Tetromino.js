@@ -60,7 +60,7 @@ function TetrominoT(position)
 	this.position = position;
 	this.squareColor = CanvasDrawer.COLOR_LIGHT_GREEN;
 	
-	this.draw = function(){ Tetromino.draw(this);};
+	this.draw = function(){ Tetromino.draw(this); };
 	
 	this.translateUp = function() { Tetromino.translateUp(this); };
 	this.translateDown = function() { Tetromino.translateDown(this); };
