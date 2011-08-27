@@ -202,11 +202,12 @@ function TetrominoT(position, manager)
 	this.createNormalSetting();
 }
 
-function TetrominoI(position)
+function TetrominoI(position, manager)
 {
 	this.squares = [];
 	this.position = position;
 	this.squareColor = CanvasDrawer.COLOR_TEAL;
+	this.manager = manager;
 	
 	this.draw = function(){ Tetromino.draw(this);};
 	
@@ -228,28 +229,38 @@ function TetrominoI(position)
 	
 	this.createHorizontalSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + 2*Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + 2*Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingHorizontal = true, this.isFacingVertical = false;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingHorizontal = true, this.isFacingVertical = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createVerticalSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + 2*Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + 2*Tetromino.squareWidth, this.position.y, this.squareColor));
 		
-		this.isFacingHorizontal = false, this.isFacingVertical = true;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingHorizontal = false, this.isFacingVertical = true;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
@@ -257,10 +268,11 @@ function TetrominoI(position)
 	this.createHorizontalSetting();
 }
 
-function TetrominoJ(position)
+function TetrominoJ(position, manager)
 {
 	this.squares = [];
 	this.position = position;
+	this.manager = manager;
 	
 	this.squareColor = CanvasDrawer.COLOR_RED;
 	
@@ -292,56 +304,80 @@ function TetrominoJ(position)
 	
 	this.createNormalSetting = function() 
 	{
-		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		var newPosition = [];
 		
-		this.isFacingNormal = true, this.isFacingLeft = false; 
-		this.isFacingReverse = false, this.isFacingRight = false;
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = true, this.isFacingLeft = false; 
+			this.isFacingReverse = false, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createLeftSetting = function() 
 	{
-		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		var newPosition = [];
 		
-		this.isFacingNormal = false, this.isFacingLeft = true; 
-		this.isFacingReverse = false, this.isFacingRight = false;
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = true; 
+			this.isFacingReverse = false, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createRightSetting = function() 
 	{
-		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		var newPosition = [];
 		
-		this.isFacingNormal = false, this.isFacingLeft = false; 
-		this.isFacingReverse = false, this.isFacingRight = true;
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = false; 
+			this.isFacingReverse = false, this.isFacingRight = true;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createReverseSetting = function() 
 	{
-		this.squares = [];
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
+		var newPosition = [];
 		
-		this.isFacingNormal = false, this.isFacingLeft = false; 
-		this.isFacingReverse = true, this.isFacingRight = false;
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
+		
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = false; 
+			this.isFacingReverse = true, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
@@ -349,10 +385,11 @@ function TetrominoJ(position)
 	this.createNormalSetting();
 }
 
-function TetrominoL(position)
+function TetrominoL(position, manager)
 {
 	this.squares = [];
 	this.position = position;
+	this.manager = manager;
 	
 	this.squareColor = CanvasDrawer.COLOR_DARK_ORANGE;
 	
@@ -384,60 +421,80 @@ function TetrominoL(position)
 	
 	this.createNormalSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingNormal = true, this.isFacingLeft = false; 
-		this.isFacingReverse = false, this.isFacingRight = false;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = true, this.isFacingLeft = false; 
+			this.isFacingReverse = false, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createLeftSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
 		
-		this.isFacingNormal = false, this.isFacingLeft = true; 
-		this.isFacingReverse = false, this.isFacingRight = false;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = true; 
+			this.isFacingReverse = false, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createRightSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingNormal = false, this.isFacingLeft = false; 
-		this.isFacingReverse = false, this.isFacingRight = true;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = false; 
+			this.isFacingReverse = false, this.isFacingRight = true;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createReverseSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y - Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingNormal = false, this.isFacingLeft = false; 
-		this.isFacingReverse = true, this.isFacingRight = false;
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingNormal = false, this.isFacingLeft = false; 
+			this.isFacingReverse = true, this.isFacingRight = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
@@ -445,10 +502,11 @@ function TetrominoL(position)
 	this.createNormalSetting();
 }
 
-function TetrominoS(position)
+function TetrominoS(position, manager)
 {
 	this.squares = [];
 	this.position = position;
+	this.manager = manager;
 	
 	this.squareColor = CanvasDrawer.COLOR_LIGHT_GREEN;
 	
@@ -472,28 +530,38 @@ function TetrominoS(position)
 	
 	this.createHorizontalSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
 		
-		this.isFacingHorizontal = true, this.isFacingVertical = false; 
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingHorizontal = true, this.isFacingVertical = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createVerticalSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingHorizontal = false, this.isFacingVertical = true; 
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingHorizontal = false, this.isFacingVertical = true;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
@@ -501,10 +569,11 @@ function TetrominoS(position)
 	this.createHorizontalSetting();
 }
 
-function TetrominoZ(position)
+function TetrominoZ(position, manager)
 {
 	this.squares = [];
 	this.position = position;
+	this.manager = manager;
 	
 	this.squareColor = CanvasDrawer.COLOR_BLUE;
 	
@@ -528,28 +597,38 @@ function TetrominoZ(position)
 	
 	this.createHorizontalSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingHorizontal = true, this.isFacingVertical = false; 
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingHorizontal = true, this.isFacingVertical = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
 	
 	this.createVerticalSetting = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x - Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y - Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingHorizontal = false, this.isFacingVertical = true; 
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingHorizontal = false, this.isFacingVertical = true;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};
@@ -557,10 +636,11 @@ function TetrominoZ(position)
 	this.createHorizontalSetting();
 }
 
-function TetrominoO(position)
+function TetrominoO(position, manager)
 {
 	this.squares = [];
 	this.position = position;
+	this.manager = manager;
 	
 	this.squareColor = CanvasDrawer.COLOR_YELLOW;
 	
@@ -576,14 +656,19 @@ function TetrominoO(position)
 	
 	this.create = function() 
 	{
-		this.squares = [];
+		var newPosition = [];
 		
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
-		this.squares.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x, this.position.y + Tetromino.squareHeight, this.squareColor));
+		newPosition.push(Tetromino.createSquare(this.position.x + Tetromino.squareWidth, this.position.y + Tetromino.squareHeight, this.squareColor));
 		
-		this.isFacingHorizontal = true, this.isFacingVertical = false; 
+		if(this.manager.isPositionChangeAllowed(this, newPosition))
+		{
+			this.isFacingHorizontal = true, this.isFacingVertical = false;
+			
+			this.squares = newPosition;
+		}
 		
 		this.draw();
 	};

@@ -87,7 +87,7 @@ window.onload = function()
 	
 	Tetris.init(new Point(0,0), canvas.width, canvas.height, Tetromino.squareHeight);
 	
-	var tetra = new TetrominoT(new Point(100, 20), Tetris);
+	var tetra = new TetrominoO(new Point(100, 20), Tetris);
 	
 	function restartTimer()
 	{
