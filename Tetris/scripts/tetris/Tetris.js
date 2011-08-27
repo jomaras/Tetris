@@ -30,20 +30,37 @@ var Tetris =
 				this.grid[i][j] = 
 				{ 
 					isTaken: false, 
-					point : new Point(i * this.squareSize, j * this.squareSize) 
+					point : new Point(i * this.squareSize, j * this.squareSize),
+					columnIndex: i,
+					rowIndex: j
 				};
 			}
 		}
+		
+		this.currentTetromino = this.getRandomTetromino();
+	},
+	
+	currentTetromino: null,
+	getRandomTetromino: function()
+	{
+		return Tetromino.createRandomTetromino(new Point(100, 20), this);
 	},
 	
 	isPositionChangeAllowed: function(tetromino, newPosition)
 	{
 		for(var i = 0; i < newPosition.length; i++)
 		{
+			var oldSquare = tetromino.squares[i];
 			var currentSquare = newPosition[i];
 			
-			if(!this.isPositionAvailable(currentSquare))
+			if(!this.isWithinBounds(currentSquare)
+			|| this.hasReachedAnchoringPosition(currentSquare))
 			{
+				if(this.isBoundFromBelow(oldSquare))
+				{
+					this.mergeTetromino(tetromino);
+				}
+				
 				return false;
 			}
 		}
@@ -51,23 +68,48 @@ var Tetris =
 		return true;
 	},
 	
-	isPositionAvailable: function(square)
+	isHorizontallyWithinBounds: function(square)
 	{
-		if(square.point.x < 0 || square.point.x >= this.width) { return false; }
-		if(square.point.y < 0 || square.point.y >= this.height){ return false; }
+		return square.point.x >= 0 && square.point.x < this.width;
+	},
+	
+	isVerticallyWithinBounds: function(square)
+	{
+		return square.point.y >= 0 && square.point.y < this.height;
+	},
+	
+	isWithinBounds: function(square)
+	{
+		return this.isHorizontallyWithinBounds(square)
+			&& this.isVerticallyWithinBounds(square);
+	},
+	
+	isBoundFromBelow: function(square)
+	{
+		var gridPoint = this.getGridPoint(square);
 		
-		try
-		{
-			var columnIndex = square.point.x / square.width;
-			var rowIndex = square.point.y / square.height;
-		}
-		catch(e)
-		{
-			var a = 3;
-			a++;
-		}
+		if(gridPoint == null) { return true; }
+		
+		var pointBellow = this.grid[gridPoint.columnIndex][gridPoint.rowIndex + 1];
+		
+		return pointBellow == null || pointBellow.isTaken;
+	},
+	
+	hasReachedAnchoringPosition: function(square)
+	{
+		return this.getGridPoint(square).isTaken;
+	},
+	
+	getGridPoint: function(square)
+	{
+		if(square == null) { return null; }
+		
+		var columnIndex = square.point.x / square.width;
+		var rowIndex = square.point.y / square.height;
 		
 		var gridPoint = this.grid[columnIndex][rowIndex];
+		
+		if(gridPoint == null) { return gridPoint; }
 		
 		if(gridPoint.point.x != square.point.x
 		|| gridPoint.point.y != square.point.y)
@@ -75,8 +117,113 @@ var Tetris =
 			alert("There is a mismatch between positions");
 		}
 		
-		return !gridPoint.isTaken;
+		return gridPoint;
 	},
+	
+	mergeTetromino: function(tetromino)
+	{
+		tetromino.squares.forEach(function(square)
+		{
+			var gridPoint = Tetris.getGridPoint(square); 
+			
+			gridPoint.square = square;
+			gridPoint.isTaken = true;
+		});
+		
+		this.checkRows();
+		
+		this.currentTetromino = this.getRandomTetromino();
+	},
+	
+	redrawCanvas: function()
+	{
+		CanvasDrawer.clearCanvas();
+		
+		this.redrawGrid();
+	},
+	
+	redrawGrid: function()
+	{
+		this.grid.forEach(function(gridColumn)
+		{
+			gridColumn.forEach(function(gridPoint)
+			{
+				if(gridPoint.square != null)
+				{
+					gridPoint.square.draw();
+				}
+			});
+		});
+	},
+	
+	checkRows: function()
+	{
+		var columnsCount = this.grid.length;
+		var rowsCount = this.grid[0].length;
+		
+		var clearedRowsIndexes = [];
+		
+		for(var rowCounter = rowsCount - 1; rowCounter >= 0; rowCounter--)
+		{
+			if(this.isRowFilled(rowCounter))
+			{
+				this.clearRow(rowCounter);
+				clearedRowIndexes.push(rowCounter);
+				this.handleRowCreated();
+			}
+			else { break; }
+		}
+		
+		if(clearedRowsIndexes.length == 0) { return; }
+		
+		for(var rowCounter = 0; rowCounter < rowsCount - clearedRowsIndexes.length; rowCounter++)
+		{
+			for(var columnCounter = clearedRowsIndexes.length; columnCounter < columnsCount; columnCounter++)
+			{
+				this.grid[columnCounter][rowCounter + clearedRowsIndexes.length].isTaken = this.grid[columnCounter][rowCounter].isTaken;
+				this.grid[columnCounter][rowCounter + clearedRowsIndexes.length].square = this.grid[columnCounter][rowCounter].square;
+				
+				if(rowCounter < clearedRowsIndexes.length)
+				{
+					this.grid[columnCounter][rowCounter].isTaken = false;
+					this.grid[columnCounter][rowCounter].square = null;
+				}
+			}
+		}
+	},
+	
+	isRowFilled: function(rowIndex)
+	{
+		var columnsCount = this.grid.length;
+		
+		var isRowFilled = true;
+		
+		for(var columnCounter = 0; columnCounter < columnsCount; columnCounter++)
+		{
+			isRowFilled = isRowFilled && this.grid[columnCounter][rowIndex].isTaken;
+			
+			if(!isRowFilled) { return false;}
+		}
+		
+		return isRowFilled;
+	},
+	
+	clearRow: function(rowIndex)
+	{
+		var columnsCount = this.grid.length;
+		
+		for(var columnCounter = 0; columnCounter < columnsCount; columnCounter++)
+		{
+			this.grid[columnCounter][rowIndex].isTaken = false;
+			this.grid[columnCounter][rowIndex].square = null;
+		}
+	},
+	
+	handleRowCreated: function()
+	{
+		
+	},
+	
 	timerId : null
 };
 
@@ -87,8 +234,6 @@ window.onload = function()
 	
 	Tetris.init(new Point(0,0), canvas.width, canvas.height, Tetromino.squareHeight);
 	
-	var tetra = new TetrominoO(new Point(100, 20), Tetris);
-	
 	function restartTimer()
 	{
 		if(Tetris.timerId != null) { window.clearTimeout(Tetris.timerId); }
@@ -98,9 +243,8 @@ window.onload = function()
 	
 	function moveDown()
 	{
-		//restartTimer();
-		CanvasDrawer.clearCanvas();
-		tetra.translateDown();
+		Tetris.redrawCanvas();
+		Tetris.currentTetromino.translateDown();
 	}
 	
 	KeyboardHandler.handleKeyPress(KeyboardHandler.KEY_DOWN, moveDown);
@@ -110,9 +254,8 @@ window.onload = function()
 		KeyboardHandler.KEY_UP, 
 		function()
 		{
-			//restartTimer();
-			CanvasDrawer.clearCanvas();
-			tetra.rotateRight();
+			Tetris.redrawCanvas();
+			Tetris.currentTetromino.rotateRight();
 		}
 	);
 	
@@ -121,9 +264,8 @@ window.onload = function()
 		KeyboardHandler.KEY_LEFT, 
 		function()
 		{
-			//restartTimer();
-			CanvasDrawer.clearCanvas();
-			tetra.translateLeft();
+			Tetris.redrawCanvas();
+			Tetris.currentTetromino.translateLeft();
 		}
 	);
 	
@@ -132,9 +274,8 @@ window.onload = function()
 		KeyboardHandler.KEY_RIGHT, 
 		function()
 		{
-			//restartTimer();
-			CanvasDrawer.clearCanvas();
-			tetra.translateRight();
+			Tetris.redrawCanvas();
+			Tetris.currentTetromino.translateRight();
 		}
 	);
 	

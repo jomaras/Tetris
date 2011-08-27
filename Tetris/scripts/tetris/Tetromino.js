@@ -85,13 +85,37 @@ Tetromino.translateRight = function(tetromino)
 	
 	tetromino.draw();
 };
+
+Tetromino.createRandomTetromino = function(position, manager)
+{
+	//T-4 pos; I-2 pos; J-4 pos; L-4 pos; S-2 pos; Z-2 pos; O-1 pos
+	var numberOfTetrominoTypes = 7; 
 	
-function TetrominoT(position, manager)
+	switch(RandomNumberGenerator.getRandomNumber(numberOfTetrominoTypes))
+	{
+		case 0: return new TetrominoT(position, manager, RandomNumberGenerator.getRandomNumber(4));
+		case 1: return new TetrominoI(position, manager, RandomNumberGenerator.getRandomNumber(2));
+		case 2: return new TetrominoJ(position, manager, RandomNumberGenerator.getRandomNumber(4));
+		case 3: return new TetrominoL(position, manager, RandomNumberGenerator.getRandomNumber(4));
+		case 4: return new TetrominoS(position, manager, RandomNumberGenerator.getRandomNumber(2));
+		case 5: return new TetrominoZ(position, manager, RandomNumberGenerator.getRandomNumber(2));
+		case 6: return new TetrominoO(position, manager);
+		default: alert("unknown tetromino type"); return null;
+	}
+};
+
+Tetromino.normalizeOrientation = function(orientation, orintationCount)
+{
+	return orientation == null || orientation >= orintationCount || orientation < 0 ? 0 : orientation;
+};
+	
+function TetrominoT(position, manager, orientation)
 {
 	this.squares = [];
 	this.position = position;
 	this.squareColor = CanvasDrawer.COLOR_LIGHT_GREEN;
 	this.manager = manager;
+	this.orientation = Tetromino.normalizeOrientation(orientation, 4);
 	
 	this.draw = function(){ Tetromino.draw(this); };
 	
@@ -199,15 +223,23 @@ function TetrominoT(position, manager)
 		this.draw();
 	};
 	
-	this.createNormalSetting();
+	switch(this.orientation)
+	{
+		case 0: this.createNormalSetting(); break;
+		case 1: this.createLeftSetting(); break;
+		case 2: this.createRightSetting(); break;
+		case 3: this.createReverseSetting(); break;
+		default: alert("Unknown orientation"); break;
+	};
 }
 
-function TetrominoI(position, manager)
+function TetrominoI(position, manager, orientation)
 {
 	this.squares = [];
 	this.position = position;
 	this.squareColor = CanvasDrawer.COLOR_TEAL;
 	this.manager = manager;
+	this.orientation = Tetromino.normalizeOrientation(orientation, 2);
 	
 	this.draw = function(){ Tetromino.draw(this);};
 	
@@ -265,14 +297,20 @@ function TetrominoI(position, manager)
 		this.draw();
 	};
 	
-	this.createHorizontalSetting();
+	switch(this.orientation)
+	{
+		case 0: this.createHorizontalSetting(); break;
+		case 1: this.createVerticalSetting(); break;
+		default: alert("Unknown orientation"); break;
+	};
 }
 
-function TetrominoJ(position, manager)
+function TetrominoJ(position, manager, orientation)
 {
 	this.squares = [];
 	this.position = position;
 	this.manager = manager;
+	this.orientation = Tetromino.normalizeOrientation(orientation, 4);
 	
 	this.squareColor = CanvasDrawer.COLOR_RED;
 	
@@ -382,14 +420,22 @@ function TetrominoJ(position, manager)
 		this.draw();
 	};
 	
-	this.createNormalSetting();
+	switch(this.orientation)
+	{
+		case 0: this.createNormalSetting(); break;
+		case 1: this.createLeftSetting(); break;
+		case 2: this.createRightSetting(); break;
+		case 3: this.createReverseSetting(); break;
+		default: alert("Unknown orientation"); break;
+	};
 }
 
-function TetrominoL(position, manager)
+function TetrominoL(position, manager, orientation)
 {
 	this.squares = [];
 	this.position = position;
 	this.manager = manager;
+	this.orientation = Tetromino.normalizeOrientation(orientation, 4);
 	
 	this.squareColor = CanvasDrawer.COLOR_DARK_ORANGE;
 	
@@ -499,14 +545,22 @@ function TetrominoL(position, manager)
 		this.draw();
 	};
 	
-	this.createNormalSetting();
+	switch(this.orientation)
+	{
+		case 0: this.createNormalSetting(); break;
+		case 1: this.createLeftSetting(); break;
+		case 2: this.createRightSetting(); break;
+		case 3: this.createReverseSetting(); break;
+		default: alert("Unknown orientation"); break;
+	};
 }
 
-function TetrominoS(position, manager)
+function TetrominoS(position, manager, orientation)
 {
 	this.squares = [];
 	this.position = position;
 	this.manager = manager;
+	this.orientation = Tetromino.normalizeOrientation(orientation, 2);
 	
 	this.squareColor = CanvasDrawer.COLOR_LIGHT_GREEN;
 	
@@ -566,14 +620,20 @@ function TetrominoS(position, manager)
 		this.draw();
 	};
 	
-	this.createHorizontalSetting();
+	switch(this.orientation)
+	{
+		case 0: this.createHorizontalSetting(); break;
+		case 1: this.createVerticalSetting(); break;
+		default: alert("Unknown orientation"); break;
+	};
 }
 
-function TetrominoZ(position, manager)
+function TetrominoZ(position, manager, orientation)
 {
 	this.squares = [];
 	this.position = position;
 	this.manager = manager;
+	this.orientation = Tetromino.normalizeOrientation(orientation, 2);
 	
 	this.squareColor = CanvasDrawer.COLOR_BLUE;
 	
@@ -633,7 +693,12 @@ function TetrominoZ(position, manager)
 		this.draw();
 	};
 	
-	this.createHorizontalSetting();
+	switch(this.orientation)
+	{
+		case 0: this.createHorizontalSetting(); break;
+		case 1: this.createVerticalSetting(); break;
+		default: alert("Unknown orientation"); break;
+	};
 }
 
 function TetrominoO(position, manager)

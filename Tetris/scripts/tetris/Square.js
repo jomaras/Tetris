@@ -4,6 +4,7 @@ function Square(point, width, height, color)
 	this.width = width;
 	this.height = height;
 	this.color = color;
+	this.outlineColor = CanvasDrawer.COLOR_BLACK;
 	
 	this.draw = function()
 	{

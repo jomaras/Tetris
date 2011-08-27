@@ -6,16 +6,22 @@ var CanvasDrawer =
 		this.canvas = canvas;
 	},
 	
-	drawSquare: function(point, width, height, color)
+	drawSquare: function(point, width, height, color, outlineColor)
 	{
 		if(this.canvas == null) { alert("canvas is not initialized!"); return; }
 		
-		color = color || "rgb(0,0,0)";
+		var margin = 1;
+		
+		color = color || this.COLOR_BLACK;
+		outlineColor = outlineColor || this.COLOR_BLACK;
 		
 		var canvasContext = this.canvas.getContext('2d');
 		
-		canvasContext.fillStyle = color;
+		canvasContext.fillStyle = outlineColor;
 		canvasContext.fillRect(point.x, point.y, width, height);
+		
+		canvasContext.fillStyle = color;
+		canvasContext.fillRect(point.x + margin, point.y + margin, width - 2 * margin, height - 2*margin);
 	},
 	
 	clearCanvas: function()
@@ -36,4 +42,5 @@ var CanvasDrawer =
 	COLOR_LIGHT_GREEN:"rgb(68, 255, 68)",
 	COLOR_VIOLET:"rgb(255, 68, 255)",
 	COLOR_YELLOW:"rgb(255, 255, 68)",
+	COLOR_BLACK: "rgb(0, 0, 0)"
 };
