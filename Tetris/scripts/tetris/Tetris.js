@@ -37,7 +37,88 @@ var Tetris =
 			}
 		}
 		
+		this.registerKeyboardHandlers();
+		
 		this.currentTetromino = this.getRandomTetromino();
+		this.isGameBeingPlayed = true;
+	},
+	
+	registerKeyboardHandlers: function()
+	{
+		KeyboardHandler.handleKeyPress
+		(
+			KeyboardHandler.KEY_DOWN, 
+			this.moveCurrentTetrominoDown
+		);
+		
+		KeyboardHandler.handleKeyPress
+		(
+			KeyboardHandler.KEY_UP, 
+			this.rotateCurrentTetrominoToRight
+		);
+		
+		KeyboardHandler.handleKeyPress
+		(
+			KeyboardHandler.KEY_LEFT, 
+			this.translateCurrentTetrominoToLeft
+		);
+		
+		KeyboardHandler.handleKeyPress
+		(
+			KeyboardHandler.KEY_RIGHT, 
+			this.translateCurrentTetrominoToRight
+		);
+	},
+	
+	moveCurrentTetrominoDown: function()
+	{
+		Tetris.redrawCanvas();
+		Tetris.currentTetromino.translateDown();
+	},
+	
+	rotateCurrentTetrominoToRight: function()
+	{
+		Tetris.redrawCanvas();
+		Tetris.currentTetromino.rotateRight();
+	},
+	
+	translateCurrentTetrominoToLeft: function()
+	{
+		Tetris.redrawCanvas();
+		Tetris.currentTetromino.translateLeft();
+	},
+	
+	translateCurrentTetrominoToRight: function()
+	{
+		Tetris.redrawCanvas();
+		Tetris.currentTetromino.translateRight();
+	},
+	
+	deregisterKeyboardHandlers: function()
+	{
+		KeyboardHandler.stopHandlingKeyPress
+		(
+			KeyboardHandler.KEY_DOWN, 
+			this.moveCurrentTetrominoDown
+		);
+		
+		KeyboardHandler.stopHandlingKeyPress
+		(
+			KeyboardHandler.KEY_UP, 
+			this.rotateCurrentTetrominoToRight
+		);
+		
+		KeyboardHandler.stopHandlingKeyPress
+		(
+			KeyboardHandler.KEY_LEFT, 
+			this.translateCurrentTetrominoToLeft
+		);
+		
+		KeyboardHandler.stopHandlingKeyPress
+		(
+			KeyboardHandler.KEY_RIGHT, 
+			this.translateCurrentTetrominoToRight
+		);
 	},
 	
 	currentTetromino: null,
@@ -58,6 +139,8 @@ var Tetris =
 			{
 				if(this.isBoundFromBelow(oldSquare))
 				{
+					if(oldSquare == null) { this.exitGame(); }
+					
 					this.mergeTetromino(tetromino);
 				}
 				
@@ -214,7 +297,17 @@ var Tetris =
 	
 	handleRowsDestroyed: function(numberOfClearedRows)
 	{
+		this.currentPoints += Math.floor(numberOfClearedRows*Math.pow((this.rowModifier), numberOfClearedRows) * this.pointsPerRow*this.currentLevel);
 		
+		this.updatePointsDisplay();
+		
+		if(this.currentPoints > this.currentLevelCap)
+		{
+			this.currentLevelCap *= this.levelModifier;
+			this.currentLevel++;
+			this.timerInterval -= this.timerModifier;
+			this.updateLevelsDisplay();
+		}
 	},
 	
 	shiftDownFilledCells: function(columnIndex, maxClearedRow)
@@ -246,7 +339,34 @@ var Tetris =
 		}
 	},
 	
-	timerId : null
+	timerId : null,
+	timerInterval: 550,
+	timerModifier: 20,
+	
+	currentLevel: 1,
+	currentLevelCap: 1000,
+	currentPoints: 0,
+	pointsPerRow: 100,
+	rowModifier: 1.2,
+	levelModifier: 2,
+	isGameBeingPlayed: false,
+	
+	updatePointsDisplay: function()
+	{
+		document.getElementById("pointsCounter").textContent = this.currentPoints;
+	},
+	
+	updateLevelsDisplay: function()
+	{
+		document.getElementById("levelCounter").textContent = this.currentLevel;
+	},
+	
+	exitGame: function()
+	{
+		this.isGameBeingPlayed = false;
+		this.deregisterKeyboardHandlers();
+		alert("game over");
+	}
 };
 
 window.onload = function()
@@ -260,46 +380,19 @@ window.onload = function()
 	{
 		if(Tetris.timerId != null) { window.clearTimeout(Tetris.timerId); }
 		
-		Tetris.timerId = window.setTimeout(function() { moveDown(); restartTimer(); }, 500);
+		if(Tetris.isGameBeingPlayed)
+		{
+			Tetris.timerId = window.setTimeout
+			(
+				function() 
+				{ 
+					Tetris.moveCurrentTetrominoDown(); 
+					restartTimer(); 
+				}, 
+				Tetris.timerInterval
+			);
+		}
 	}
-	
-	function moveDown()
-	{
-		Tetris.redrawCanvas();
-		Tetris.currentTetromino.translateDown();
-	}
-	
-	KeyboardHandler.handleKeyPress(KeyboardHandler.KEY_DOWN, moveDown);
-	
-	KeyboardHandler.handleKeyPress
-	(
-		KeyboardHandler.KEY_UP, 
-		function()
-		{
-			Tetris.redrawCanvas();
-			Tetris.currentTetromino.rotateRight();
-		}
-	);
-	
-	KeyboardHandler.handleKeyPress
-	(
-		KeyboardHandler.KEY_LEFT, 
-		function()
-		{
-			Tetris.redrawCanvas();
-			Tetris.currentTetromino.translateLeft();
-		}
-	);
-	
-	KeyboardHandler.handleKeyPress
-	(
-		KeyboardHandler.KEY_RIGHT, 
-		function()
-		{
-			Tetris.redrawCanvas();
-			Tetris.currentTetromino.translateRight();
-		}
-	);
 	
 	restartTimer();
 };

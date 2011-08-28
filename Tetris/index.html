@@ -16,6 +16,7 @@
 			{
 				margin-left:auto;
 				margin-right:auto;
+				text-align: center;
 			}
 		</style>
 		<script type="text/javascript" src="scripts/math/Point.js"></script>
@@ -28,7 +29,9 @@
 	</head>
 	
 	<body>
-		<h2 style="text-align: center;">TetrisGit</h2>
+		<div style="text-align: center; font-size: 16pt">Tetris</div>
+		<div class="centered"><span>Points:</span><span id="pointsCounter">0</span></div>
+		<div class="centered"><span>Level:</span><span id="levelCounter">1</span></div>
 		<div class="canvasContainer centered">	
 			<canvas id="canvas" width="300" height="540"></canvas>
 		</div>
