@@ -43,7 +43,7 @@ var Tetris =
 	currentTetromino: null,
 	getRandomTetromino: function()
 	{
-		return Tetromino.createRandomTetromino(new Point(100, 20), this);
+		return Tetromino.createRandomTetromino(new Point(120, 30), this);
 	},
 	
 	isPositionChangeAllowed: function(tetromino, newPosition)
@@ -168,27 +168,25 @@ var Tetris =
 			if(this.isRowFilled(rowCounter))
 			{
 				this.clearRow(rowCounter);
-				clearedRowIndexes.push(rowCounter);
-				this.handleRowCreated();
+				clearedRowsIndexes.push(rowCounter);
 			}
-			else { break; }
 		}
 		
 		if(clearedRowsIndexes.length == 0) { return; }
+		else { this.handleRowsDestroyed(clearedRowsIndexes.length); }
 		
-		for(var rowCounter = 0; rowCounter < rowsCount - clearedRowsIndexes.length; rowCounter++)
+		for(var columnCounter = 0; columnCounter < columnsCount; columnCounter++)
 		{
-			for(var columnCounter = clearedRowsIndexes.length; columnCounter < columnsCount; columnCounter++)
+			for(var rowIndex = 0; rowIndex < clearedRowsIndexes.length; rowIndex++)
 			{
-				this.grid[columnCounter][rowCounter + clearedRowsIndexes.length].isTaken = this.grid[columnCounter][rowCounter].isTaken;
-				this.grid[columnCounter][rowCounter + clearedRowsIndexes.length].square = this.grid[columnCounter][rowCounter].square;
+				var rowCounter = clearedRowsIndexes[rowIndex];
+				var cell = this.grid[columnCounter][rowCounter];
 				
-				if(rowCounter < clearedRowsIndexes.length)
+				if(!cell.isTaken && cell.square == null)
 				{
-					this.grid[columnCounter][rowCounter].isTaken = false;
-					this.grid[columnCounter][rowCounter].square = null;
+					this.shiftColumnCellsDown(columnCounter, rowCounter);
 				}
-			}
+			}	
 		}
 	},
 	
@@ -219,9 +217,28 @@ var Tetris =
 		}
 	},
 	
-	handleRowCreated: function()
+	handleRowsDestroyed: function(numberOfClearedRows)
 	{
 		
+	},
+	
+	shiftColumnCellsDown: function(columnIndex, rowIndex)
+	{
+		for(var i = rowIndex; i >= 0; i--)
+		{
+			if(i == 0) 
+			{ 
+				this.grid[columnIndex][i].isTaken = false; 
+				this.grid[columnIndex][i].square = null; 
+			}
+			else
+			{
+				this.grid[columnIndex][i].isTaken = this.grid[columnIndex][i - 1].isTaken;
+				this.grid[columnIndex][i].square = this.grid[columnIndex][i - 1].square != null
+												 ? this.grid[columnIndex][i - 1].square.createTranslatedDownSquare()
+												 : null;
+			}
+		}
 	},
 	
 	timerId : null

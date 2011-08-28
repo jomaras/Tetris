@@ -1,7 +1,7 @@
 function Tetromino(position){ }
 
-Tetromino.squareWidth = 20;
-Tetromino.squareHeight = 20;
+Tetromino.squareWidth = 30;
+Tetromino.squareHeight = 30;
 Tetromino.createSquare = function(xPos, yPos, color)
 {
 	return new Square(new Point(xPos, yPos), Tetromino.squareWidth, Tetromino.squareHeight, color);
@@ -89,7 +89,7 @@ Tetromino.translateRight = function(tetromino)
 Tetromino.createRandomTetromino = function(position, manager)
 {
 	//T-4 pos; I-2 pos; J-4 pos; L-4 pos; S-2 pos; Z-2 pos; O-1 pos
-	var numberOfTetrominoTypes = 7; 
+	var numberOfTetrominoTypes = 7;
 	
 	switch(RandomNumberGenerator.getRandomNumber(numberOfTetrominoTypes))
 	{
