@@ -175,19 +175,14 @@ var Tetris =
 		if(clearedRowsIndexes.length == 0) { return; }
 		else { this.handleRowsDestroyed(clearedRowsIndexes.length); }
 		
+		var maxClearedRow = clearedRowsIndexes[0];
+		
 		for(var columnCounter = 0; columnCounter < columnsCount; columnCounter++)
 		{
-			for(var rowIndex = 0; rowIndex < clearedRowsIndexes.length; rowIndex++)
-			{
-				var rowCounter = clearedRowsIndexes[rowIndex];
-				var cell = this.grid[columnCounter][rowCounter];
-				
-				if(!cell.isTaken && cell.square == null)
-				{
-					this.shiftColumnCellsDown(columnCounter, rowCounter);
-				}
-			}	
+			this.shiftDownFilledCells(columnCounter, maxClearedRow);
 		}
+		
+		this.redrawCanvas();
 	},
 	
 	isRowFilled: function(rowIndex)
@@ -222,21 +217,31 @@ var Tetris =
 		
 	},
 	
-	shiftColumnCellsDown: function(columnIndex, rowIndex)
+	shiftDownFilledCells: function(columnIndex, maxClearedRow)
 	{
-		for(var i = rowIndex; i >= 0; i--)
+		var filledRowIndexes = [];
+		for(var i = 0; i <= maxClearedRow; i++)
 		{
-			if(i == 0) 
-			{ 
-				this.grid[columnIndex][i].isTaken = false; 
-				this.grid[columnIndex][i].square = null; 
+			if(this.grid[columnIndex][i].isTaken) { filledRowIndexes.push(i); }
+		}
+		
+		for(var i = maxClearedRow; i >= 0; i--)
+		{
+			var currentPoint = this.grid[columnIndex][i]; 
+			
+			if(filledRowIndexes.length > 0)
+			{
+				var lastFilledRowIndex = filledRowIndexes.pop();
+				
+				var pointToMove = this.grid[columnIndex][lastFilledRowIndex];
+				
+				currentPoint.isTaken = true;
+				currentPoint.square = pointToMove.square.createTranslatedDownBy(i - lastFilledRowIndex);
 			}
 			else
 			{
-				this.grid[columnIndex][i].isTaken = this.grid[columnIndex][i - 1].isTaken;
-				this.grid[columnIndex][i].square = this.grid[columnIndex][i - 1].square != null
-												 ? this.grid[columnIndex][i - 1].square.createTranslatedDownSquare()
-												 : null;
+				currentPoint.isTaken = false;
+				currentPoint.square = null;
 			}
 		}
 	},

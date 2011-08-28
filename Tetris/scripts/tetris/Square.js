@@ -71,6 +71,17 @@ function Square(point, width, height, color)
 		);
 	};
 	
+	this.createTranslatedDownBy = function(offset)
+	{
+		return new Square
+		(
+			new Point(this.point.x, this.point.y + offset*this.height),
+			this.width,
+			this.height,
+			this.color
+		);
+	};
+	
 	this.createTranslatedRightSquare = function()
 	{
 		return new Square
